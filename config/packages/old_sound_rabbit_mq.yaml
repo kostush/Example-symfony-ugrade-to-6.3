@@ -1,0 +1,16 @@
+old_sound_rabbit_mq:
+  connections:
+    default:
+      host: "%env(resolve:RABBITMQ_SERVER_IP_ADDRESS)%"
+      port: "%env(resolve:RABBITMQ_SERVER_PORT)%"
+      user: "%env(resolve:RABBITMQ_USER)%"
+      password: "%env(resolve:RABBITMQ_PASSWORD)%"
+      vhost: "%env(resolve:RABBITMQ_VHOST)%"
+      lazy: true
+  producers:
+    terravision_messaging:
+      class: OldSound\RabbitMqBundle\RabbitMq\Producer
+      connection: default
+      exchange_options:
+        name: terravision_messages
+        type: direct

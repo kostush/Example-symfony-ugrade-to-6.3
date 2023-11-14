@@ -1,0 +1,36 @@
+nelmio_api_doc:
+    documentation:
+        servers:
+          - url: http://stage-api-ms.terravision.eu/
+            description: Stage environment can be used for dev and uat,reflects the production functionality
+          - url: https://api-ms.terravision.eu
+            description: Production environment
+        info:
+            title: Terravion API
+#            description: Documentation
+            version: 1.0.0
+        components:
+            securitySchemes:
+                Basic:
+                    type: http
+                    scheme: basic auth
+                    bearerFormat: JWT
+        security:
+            - Basic: []
+    areas: # to filter documented areas
+        default:
+            path_patterns:
+                - ^/disable # fake pattern to disable common doc
+        distribusion:
+            path_patterns:
+                - ^/api/v1/distribusion/import # order creation
+                - ^/api/v1/distribusion/rides # distribusion rides
+        rides:
+            path_patterns:
+                - ^/api/v1/rides # information about the ride
+        terravision:
+            path_patterns:
+                - ^/api/v2 # terravision api
+        eticketing:
+            path_patterns:
+                - ^/api/v3 # terravision api

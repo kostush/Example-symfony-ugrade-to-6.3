@@ -1,0 +1,18 @@
+{
+  "customer_mail":"john.doe@email.com",
+  "customer_telephone":"+49000000000",
+  "customer_language":"en",
+  "customer_country":"DE",
+  "customer_name":"John DOE",
+  "ticket_nr":"7XXXXX",
+  "booking_time":"2019/01/23 17:33:07",
+  "departure_stop":"Milan Centrale ",
+  "arrival_stop":"Bergamo Airport Bus Station",
+  "departure_datetime":"2019/02/01 15:10:00",
+  "arrival_datetime":"2019/02/01 16:10:00",
+  "price":10.0,
+  "commission":0,
+  "currency":"EUR",
+  "agency":"distribusion",
+  "total_passengers":2
+}

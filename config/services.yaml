@@ -1,0 +1,188 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    qr_code_generator_url: "%env(resolve:QR_CODE_GENERATOR_URL)%"
+    qr_code_api_endpoint: "%env(resolve:QR_CODE_API_ENDPOINT)%"
+    distribusion_auth_login: "%env(resolve:DISTRIBUSION_AUTH_LOGIN)%"
+    distribusion_auth_password: "%env(resolve:DISTRIBUSION_AUTH_PASSWORD)%"
+    distribusion_api_key: "%env(resolve:DISTRIBUSION_API_KEY)%"
+    distribusion_retailer_partner_number: "%env(resolve:DISTRIBUSION_RETAILER_PARTNER_NUMBER)%"
+    distribusion_connections_url: "%env(resolve:DISTRIBUSION_CONNECTIONS_URL)%"
+    distribusion_availability_url: "%env(resolve:DISTRIBUSION_AVAILABILITY_URL)%"
+    distribusion_orders_url: "%env(resolve:DISTRIBUSION_ORDERS_URL)%"
+    distribusion_status_url: "%env(resolve:DISTRIBUSION_STATUS_URL)%"
+    distribusion_tickets_url: "%env(resolve:DISTRIBUSION_TICKETS_URL)%"
+    go_euro_auth_login: "%env(resolve:GO_EURO_AUTH_LOGIN)%"
+    go_euro_auth_password: "%env(resolve:GO_EURO_AUTH_PASSWORD)%"
+    go_euro_auth_url: "%env(resolve:GO_EURO_AUTH_URL)%"
+    go_euro_import_url: "%env(resolve:GO_EURO_IMPORT_URL)%"
+    go_euro_portal_login: "webmarketing@terravision.eu"
+    go_euro_portal_password: "Terravision123171"
+    autostradale_auth_login: "%env(resolve:AUTOSTRADALE_AUTH_LOGIN)%"
+    autostradale_auth_password: "%env(resolve:AUTOSTRADALE_AUTH_PASSWORD)%"
+    autostradale_auth_url: "%env(resolve:AUTOSTRADALE_AUTH_URL)%"
+    autostradale_get_booking_ride_url: "%env(resolve:AUTOSTRADALE_GET_BOOKING_RIDE_URL)%"
+    autostradale_put_booking_cart_url: "%env(resolve:AUTOSTRADALE_PUT_BOOKING_CART_URL)%"
+    autostradale_del_booking_cart_url: "%env(resolve:AUTOSTRADALE_DEL_BOOKING_CART_URL)%"
+    autostradale_confirm_booking_cart_url: "%env(resolve:AUTOSTRADALE_CONFIRM_BOOKING_CART_URL)%"
+    autostradale_update_booking_url: "%env(resolve:AUTOSTRADALE_UPDATE_BOOKING_URL)%"
+    jwt_login_url: "%env(resolve:JWT_LOGIN_URL)%"
+    rides_list_url: "%env(resolve:RIDES_LIST_URL)%"
+    e_ticket_rides_list_url: "%env(resolve:E_TICKET_RIDES_LIST_URL)%"
+    rides_data_url: "%env(resolve:RIDES_DATA_URL)%"
+    service_data_url: "%env(resolve:SERVICE_DATA_URL)%"
+    city_data_url: "%env(resolve:CITY_DATA_URL)%"
+    cities_list_url: "%env(resolve:CITIES_LIST_URL)%"
+    purchase_ticket_url: "%env(resolve:PURCHASE_TICKET_URL)%"
+    download_ticket_url: "%env(resolve:DOWNLOAD_TICKET_URL)%"
+    validate_ticket_url: "%env(resolve:VALIDATE_TICKET_URL)%"
+    obliterate_ticket_url: "%env(resolve:OBLITERATE_TICKET_URL)%"
+    get_passengers_list_url: "%env(resolve:GET_PASSENGERS_LIST_URL)%"
+    wemovo_auth_login: "%env(resolve:WEMOVO_AUTH_LOGIN)%"
+    wemovo_auth_password: "%env(resolve:WEMOVO_AUTH_PASSWORD)%"
+    mycicero_auth_login: "%env(resolve:MYCICERO_AUTH_LOGIN)%"
+    mycicero_auth_password: "%env(resolve:MYCICERO_AUTH_PASSWORD)%"
+    urbi_auth_login: "%env(resolve:URBI_AUTH_LOGIN)%"
+    urbi_auth_password: "%env(resolve:URBI_AUTH_PASSWORD)%"
+    is_logger_active: "%env(bool:IS_LOGGER_ACTIVE)%"
+    e_ticketing_ticket_download_attempts: "%env(E_TICKETING_TICKET_DOWNLOAD_ATTEMPTS)%"
+    redis_user: '%env(REDIS_USER)%'
+    redis_password: '%env(REDIS_PASSWORD)%'
+    redis_host: '%env(REDIS_HOST)%'
+    redis_port: '%env(REDIS_PORT)%'
+    redis_expiration_timeout: '%env(REDIS_EXPIRATION_TIMEOUT)%'
+
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Mapping,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    App\Service\GoEuro\ApiProcessor:
+      $authUrl: '%go_euro_auth_url%'
+      $importUrl: '%go_euro_import_url%'
+      $portalLogin: '%go_euro_portal_login%'
+      $portalPassword: '%go_euro_portal_password%'
+
+    App\Service\GoEuro\TicketProcessor:
+        $qrCodeGeneratorUrl: '%qr_code_generator_url%'
+        $qrCodeApiEndpoint: '%qr_code_api_endpoint%'
+        $authLogin: '%go_euro_auth_login%'
+        $authPassword: '%go_euro_auth_password%'
+
+    App\Service\Distribusion\TicketProcessor:
+        $qrCodeGeneratorUrl: '%qr_code_generator_url%'
+        $qrCodeApiEndpoint: '%qr_code_api_endpoint%'
+        $authLogin: '%distribusion_auth_login%'
+        $authPassword: '%distribusion_auth_password%'
+
+    App\Service\Distribusion\BookingProcessor:
+        $apiKey: '%distribusion_api_key%'
+        $projectDir: '%kernel.project_dir%'
+        $ordersUrl: '%distribusion_orders_url%'
+        $statusUrl: '%distribusion_status_url%'
+        $ticketsUrl: '%distribusion_tickets_url%'
+        $findUrl: '%distribusion_connections_url%'
+        $vacancyUrl: '%distribusion_availability_url%'
+        $retailerPartnerNumber: '%distribusion_retailer_partner_number%'
+
+    App\Service\Distribusion\RoundTripBookingProcessor:
+        $apiKey: '%distribusion_api_key%'
+        $projectDir: '%kernel.project_dir%'
+        $ordersUrl: '%distribusion_orders_url%'
+        $statusUrl: '%distribusion_status_url%'
+        $ticketsUrl: '%distribusion_tickets_url%'
+        $findUrl: '%distribusion_connections_url%'
+        $vacancyUrl: '%distribusion_availability_url%'
+        $retailerPartnerNumber: '%distribusion_retailer_partner_number%'
+
+    App\Service\EmailNotifier:
+        $environment: '%kernel.environment%'
+
+    App\Service\Autostradale\AuthProcessor:
+        $authLogin: '%autostradale_auth_login%'
+        $authPassword: '%autostradale_auth_password%'
+        $authUrl: '%autostradale_auth_url%'
+
+    App\Service\Autostradale\BookingProcessor:
+        $getBookingRideUrl: '%autostradale_get_booking_ride_url%'
+        $putBookingCartUrl: '%autostradale_put_booking_cart_url%'
+        $delBookingCartUrl: '%autostradale_del_booking_cart_url%'
+        $confirmBookingCartUrl: '%autostradale_confirm_booking_cart_url%'
+        $updateBookingUrl: '%autostradale_update_booking_url%'
+
+    App\Service\Autostradale\TicketProcessor:
+        $projectDir: '%kernel.project_dir%'
+
+    App\Service\Schedule\RidesProcessor:
+        $jwtLoginUrl: '%jwt_login_url%'
+        $ridesListUrl: '%rides_list_url%'
+        $ridesDataUrl: '%rides_data_url%'
+
+    App\Service\Wemovo\TicketProcessor:
+        $qrCodeGeneratorUrl: '%qr_code_generator_url%'
+        $qrCodeApiEndpoint: '%qr_code_api_endpoint%'
+        $authLogin: '%wemovo_auth_login%'
+        $authPassword: '%wemovo_auth_password%'
+
+    App\Service\MyCicero\TicketProcessor:
+        $qrCodeGeneratorUrl: '%qr_code_generator_url%'
+        $qrCodeApiEndpoint: '%qr_code_api_endpoint%'
+        $authLogin: '%mycicero_auth_login%'
+        $authPassword: '%mycicero_auth_password%'
+
+    App\Service\Urbi\TicketProcessor:
+        $qrCodeGeneratorUrl: '%qr_code_generator_url%'
+        $qrCodeApiEndpoint: '%qr_code_api_endpoint%'
+        $authLogin: '%urbi_auth_login%'
+        $authPassword: '%urbi_auth_password%'
+
+    App\Service\TerravisionApi\TerravisionApiProcessor:
+        $jwtLoginUrl: '%jwt_login_url%'
+        $ridesDataUrl: '%rides_data_url%'
+        $serviceDataUrl: '%service_data_url%'
+        $cityDataUrl: '%city_data_url%'
+        $citiesListUrl: '%cities_list_url%'
+        $ridesListUrl: '%rides_list_url%'
+        $qrCodeGeneratorUrl: '%qr_code_generator_url%'
+        $purchaseTicketUrl: '%purchase_ticket_url%'
+        $downloadTicketUrl: '%download_ticket_url%'
+        $validateTicketUrl: '%validate_ticket_url%'
+        $obliterateTicketUrl: '%obliterate_ticket_url%'
+        $getPassengersListUrl: '%get_passengers_list_url%'
+        $eTicketRidesListUrl: '%e_ticket_rides_list_url%'
+        $entityManager: '@doctrine.orm.entity_manager'
+        $eTicketingTicketDownloadAttempts: '%e_ticketing_ticket_download_attempts%'
+
+    App\Service\MicroserviceLogger:
+        $isLoggerActive: '%is_logger_active%'
+
+    OldSound\RabbitMqBundle\RabbitMq\Producer: '@old_sound_rabbit_mq.terravision_messaging_producer'
+
+    App\Service\RedisClient:
+        $redisUser: '%redis_user%'
+        $redisPassword: '%redis_password%'
+        $redisHost: '%redis_host%'
+        $redisPort: '%redis_port%'
+        $redisExpirationTimeout: '%redis_expiration_timeout%'

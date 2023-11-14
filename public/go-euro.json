@@ -1,0 +1,74 @@
+[
+  {
+    "transactionId": 5707702298738688,
+    "createdAt": "2018-10-24T12:07:31.272Z",
+    "price": {
+      "lowestUnitValue": 10000,
+      "currency": "EUR"
+    },
+    "type": "purchase",
+    "passengerName": {
+      "firstName": "John",
+      "lastName": "Doe"
+    },
+    "travelDate": "2018-10-25T06:00:00.000+02:00",
+    "ticketCode": "TER-413",
+    "locator": "XTR1A4",
+    "origin": {
+      "stationCode": "Ber",
+      "stationName": "Berlin"
+    },
+    "destination": {
+      "stationCode": "FRA",
+      "stationName": "Frankfurt"
+    }
+  },
+  {
+    "transactionId": 5707702298738619,
+    "createdAt": "2018-10-24T12:07:31.272Z",
+    "price": {
+      "lowestUnitValue": 10000,
+      "currency": "EUR",
+      "type": "cancellation"
+    },
+    "passengerName": {
+      "firstName": "John",
+      "lastName": "Doe"
+    },
+    "travelDate": "2018-10-25T06:00:00.000+02:00",
+    "ticketCode": "TER-413",
+    "locator": "XTR1A4",
+    "origin": {
+      "stationCode": "Ber",
+      "stationName": "Berlin"
+    },
+    "destination": {
+      "stationCode": "FRA",
+      "stationName": "Frankfurt"
+    }
+  },
+  {
+    "transactionId": 5707702298738623,
+    "createdAt": "2018-10-24T12:07:31.272Z",
+    "price": {
+      "lowestUnitValue": 5000,
+      "currency": "EUR",
+      "type": "fee"
+    },
+    "passengerName": {
+      "firstName": "John",
+      "lastName": "Doe"
+    },
+    "travelDate": "2018-10-25T06:00:00.000+02:00",
+    "ticketCode": "TER-413",
+    "locator": "XTR1A4",
+    "origin": {
+      "stationCode": "Ber",
+      "stationName": "Berlin"
+    },
+    "destination": {
+      "stationCode": "FRA",
+      "stationName": "Frankfurt"
+    }
+  }
+]
